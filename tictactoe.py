@@ -1,4 +1,4 @@
-from IPython.display import clear_output
+import os
 import socket
 import pickle
 from numpy import transpose
@@ -33,11 +33,14 @@ class Player:
 		space = int(input('pick space: 1=left, 2=mid, 3=right > '))
 		if self.board.state[row-1][space-1] == "-":
 			self.board.state[row-1][space-1] = self.choice
+			_ = os.system('clear')
+			print('waiting for opponent...')
 			self.board.show_board()
 			data = pickle.dumps(self.board.state)
 			self.board.check_for_win()
 			self.send_state(data)
 		else:
+			_ = os.system('clear')
 			print('!!! space occupied (try again) !!!')
 			self.select_action()
 
@@ -45,10 +48,10 @@ class Player:
 		while True:
 			try:
 				move = self.s.recv(1024)
-				print('vvv received vvv')
+				_ = os.system('clear')
+				print('your turn:')
 				self.board.state = pickle.loads(move)
 				self.board.check_for_win()
-				clear_output()
 				self.select_action()
 			except:
 				continue
