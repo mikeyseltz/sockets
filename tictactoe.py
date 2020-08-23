@@ -3,6 +3,10 @@ import socket
 import pickle
 from numpy import transpose
 
+def main():
+	p = Player()
+	p.join_game()
+
 class Player:
 
 	def __init__(self):
@@ -15,15 +19,13 @@ class Player:
 		self.board = Board()
 		self.choice = "n"
 
-
 	def join_game(self):
 		self.name = input('your name > ')
 		self.name = self.name.encode('utf-8')
-		self.choice = input('your letter > ')	
+		self.choice = input('your letter > ')
 		self.choice_coded = self.choice.encode('utf-8')
 		self.s.send(self.name + b"/" + self.choice_coded)
 		self.await_move()
-
 
 	def select_action(self):
 		self.board.show_board()
@@ -39,7 +41,6 @@ class Player:
 			print('!!! space occupied (try again) !!!')
 			self.select_action()
 
-
 	def await_move(self):
 		while True:
 			try:
@@ -47,6 +48,7 @@ class Player:
 				print('vvv received vvv')
 				self.board.state = pickle.loads(move)
 				self.board.check_for_win()
+				clear_output()
 				self.select_action()
 			except:
 				continue
@@ -65,27 +67,24 @@ class Board:
 					  ["-","-","-"]
 						]
 
-
 	def show_board(self):
 		for row in self.state:
 			for space in row:
 				print(space, end=" ")
 			print("")
 
-
 	def check_for_win(self):
 		for row in self.state:
-			if row[0]==row[1]==row[2]:
+			if row[0] == row[1] == row[2]:
 				if row[0] != "-":
 					print(f"{row[0]} WINS!")
 		for row in transpose(self.state):
-			if row[0]==row[1]==row[2]:
+			if row[0] == row[1] == row[2]:
 				if row[0] != "-":
 					print(f"{row[0]} WINS!")
 		if self.state[1][1] != "-":
-			if self.state[0][0]==self.state[1][1]==self.state[2][2] or self.state[0][2]==self.state[1][1]==self.state[2][0]:
+			if self.state[0][0] == self.state[1][1] == self.state[2][2] or self.state[0][2] == self.state[1][1] == self.state[2][0]:
 				print(f"{self.state[1][1]} WINS!")
-
 
 	def test_win(self, board):
 		b1 = [
@@ -114,3 +113,6 @@ class Board:
 		if board == 'b3':
 			self.state = b3
 			self.check_for_win()
+
+if __name__ == "__main__":
+    main()
