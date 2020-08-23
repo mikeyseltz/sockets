@@ -4,7 +4,7 @@ import pickle
 
 from tictactoe import Board
 
-HOST = "127.0.0.1"
+HOST = "100.115.92.206"
 PORT = 5050
 ADDRESS = (HOST, PORT)
 

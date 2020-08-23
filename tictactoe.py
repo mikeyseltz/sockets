@@ -10,7 +10,7 @@ def main():
 class Player:
 
 	def __init__(self):
-		HOST = "127.0.0.1"
+		HOST = "100.115.92.206"
 		PORT = 5050
 		ADDRESS = (HOST, PORT)
 		self.s = socket.socket()
