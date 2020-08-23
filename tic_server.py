@@ -19,6 +19,9 @@ players = {}
 
 print(f'Ready for game on {HOST}:{PORT}')
 
+board = Board()
+start = pickle.dumps(board.state)
+
 while True:
 	read_sockets, _, _ = select.select(sockets, [], [])
 	for socket in read_sockets:
@@ -30,12 +33,12 @@ while True:
 			symbol = data.split('/')[1]
 			players[name] = symbol
 			print(f"New Player: {name}")
+			if len(sockets) == 3:
+				socket.send(start)
+				continue
 		else:
 			board = socket.recv(1024)
-			print(board)
 			for sock in sockets:
 				if sock != server:
 					if sock != socket:
 						sock.send(board)
-
-
